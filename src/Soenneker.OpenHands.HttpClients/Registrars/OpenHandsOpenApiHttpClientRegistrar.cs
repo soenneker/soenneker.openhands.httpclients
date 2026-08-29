@@ -13,6 +13,8 @@ public static class OpenHandsOpenApiHttpClientRegistrar
     /// <summary>
     /// Adds <see cref="OpenHandsOpenApiHttpClient"/> as a singleton service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddOpenHandsOpenApiHttpClientAsSingleton(this IServiceCollection services)
     {
         services.AddHttpClientCacheAsSingleton()
@@ -24,6 +26,8 @@ public static class OpenHandsOpenApiHttpClientRegistrar
     /// <summary>
     /// Adds <see cref="OpenHandsOpenApiHttpClient"/> as a scoped service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddOpenHandsOpenApiHttpClientAsScoped(this IServiceCollection services)
     {
         services.AddHttpClientCacheAsSingleton()
