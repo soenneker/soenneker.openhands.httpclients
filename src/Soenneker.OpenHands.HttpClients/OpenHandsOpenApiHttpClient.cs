@@ -11,7 +11,7 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.OpenHands.HttpClients;
 
-///<inheritdoc cref="IOpenHandsOpenApiHttpClient"/>
+/// <inheritdoc cref="IOpenHandsOpenApiHttpClient"/>
 public sealed class OpenHandsOpenApiHttpClient : IOpenHandsOpenApiHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
