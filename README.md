@@ -38,7 +38,7 @@ IOpenHandsOpenApiHttpClient provider = serviceProvider
 
 HttpClient client = await provider.Get(cancellationToken);
 HttpResponseMessage response = await client.GetAsync(
-    "app-conversations/search?limit=20",
+    "api/v1/app-conversations/search?limit=20",
     cancellationToken);
 response.EnsureSuccessStatusCode();
 ```

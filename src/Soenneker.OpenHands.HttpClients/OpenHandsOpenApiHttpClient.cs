@@ -17,7 +17,7 @@ public sealed class OpenHandsOpenApiHttpClient : IOpenHandsOpenApiHttpClient
     private readonly IConfiguration _config;
     private readonly string _clientId = $"{nameof(OpenHandsOpenApiHttpClient)}:{Guid.NewGuid():N}";
 
-    private const string _prodBaseUrl = "https://app.all-hands.dev/api/v1";
+    private const string _prodBaseUrl = "https://app.all-hands.dev";
 
     public OpenHandsOpenApiHttpClient(IHttpClientCache httpClientCache, IConfiguration config)
     {
