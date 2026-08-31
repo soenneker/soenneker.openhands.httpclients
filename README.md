@@ -1,10 +1,11 @@
 [![](https://img.shields.io/nuget/v/soenneker.openhands.httpclients.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.openhands.httpclients/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.openhands.httpclients/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.openhands.httpclients/actions/workflows/publish-package.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.openhands.httpclients.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.openhands.httpclients/)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.openhands.httpclients/codeql.yml?style=for-the-badge&label=codeql)](https://github.com/soenneker/soenneker.openhands.httpclients/actions/workflows/codeql.yml)
 
 # Soenneker.OpenHands.HttpClients
 
-A .NET thread-safe singleton HttpClient for.
+Provides a cached `HttpClient` configured for the OpenHands Cloud API, including bearer authentication.
 
 ## Install
 
@@ -12,32 +13,34 @@ A .NET thread-safe singleton HttpClient for.
 dotnet add package Soenneker.OpenHands.HttpClients
 ```
 
-## Quick start
+## Configuration
 
-```csharp
-using Soenneker.OpenHands.HttpClients.Registrars;
-using Microsoft.Extensions.DependencyInjection;
-
-var services = new ServiceCollection();
-var result = services.AddOpenHandsOpenApiHttpClientAsSingleton();
+```json
+{
+  "OpenHands": {
+    "ApiKey": "your-api-key"
+  }
+}
 ```
 
-Adds `OpenHandsOpenApiHttpClient` as a singleton service.
+`OpenHands:ClientBaseUrl`, `OpenHands:AuthHeaderName`, and `OpenHands:AuthHeaderValueTemplate` can override the defaults.
 
-## What you get
+## Usage
 
-- `IOpenHandsOpenApiHttpClient` — A .NET thread-safe singleton HttpClient for.
-- `OpenHandsOpenApiHttpClientRegistrar` — Registers the OpenAPI HttpClient wrapper for dependency injection.
+```csharp
+using Soenneker.OpenHands.HttpClients.Abstract;
+using Soenneker.OpenHands.HttpClients.Registrars;
 
-## API at a glance
+services.AddOpenHandsOpenApiHttpClientAsSingleton();
 
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `OpenHandsOpenApiHttpClientRegistrar.AddOpenHandsOpenApiHttpClientAsSingleton(services)` | Adds `OpenHandsOpenApiHttpClient` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `OpenHandsOpenApiHttpClientRegistrar.AddOpenHandsOpenApiHttpClientAsScoped(services)` | Adds `OpenHandsOpenApiHttpClient` as a scoped service. | The same service collection, so additional registrations can be chained. |
+IOpenHandsOpenApiHttpClient provider = serviceProvider
+    .GetRequiredService<IOpenHandsOpenApiHttpClient>();
 
-## Practical notes
+HttpClient client = await provider.Get(cancellationToken);
+HttpResponseMessage response = await client.GetAsync(
+    "app-conversations/search?limit=20",
+    cancellationToken);
+response.EnsureSuccessStatusCode();
+```
 
-- Reuse the registered client instead of constructing one per operation.
-- Calls that return a cached or singleton value reuse the same instance until the owning service is disposed.
-- Dispose instances you own when their scope ends so held resources can be released.
+The provider owns its cached client. Disposing the provider removes and disposes that client. Scoped registration gives each provider instance its own cached client.

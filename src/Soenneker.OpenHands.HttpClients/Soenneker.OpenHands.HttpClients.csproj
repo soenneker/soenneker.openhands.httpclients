@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Description>A thread-safe singleton HttpClient for OpenHands's OpenAPI integration.</Description>
+        <Description>Provides a cached HttpClient configured for the OpenHands Cloud API, including bearer authentication.</Description>
         <Version Condition="'$(BUILD_VERSION)' == ''">4.0.0</Version>
         <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
         <AssemblyName>Soenneker.OpenHands.HttpClients</AssemblyName>
