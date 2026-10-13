@@ -30,7 +30,7 @@ public sealed class OpenHandsOpenApiHttpClient : IOpenHandsOpenApiHttpClient
     {
         return _httpClientCache.Get(_clientId, (config: _config, baseUrl: _config["OpenHands:ClientBaseUrl"] ?? _prodBaseUrl), static state =>
         {
-            var apiKey = state.config.GetValueStrict<string>("OpenHands:ApiKey");
+            var apiKey = state.config.GetStringStrict("OpenHands:ApiKey");
             string authHeaderName = state.config["OpenHands:AuthHeaderName"] ?? "Authorization";
             string authHeaderValueTemplate = state.config["OpenHands:AuthHeaderValueTemplate"] ?? "Bearer {token}";
             string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
